@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Parameters
+#SBATCH --mem=120G
+#SBATCH --partition=alien
+#SBATCH --gres=gpu:1
+#SBATCH --qos=alien
+#SBATCH --exclude=node044
+#SBATCH --error=/home/mmahaut/projects/exps/fra/%j_0_log.err
+#SBATCH --job-name=fra_soft
+#SBATCH --output=/home/mmahaut/projects/exps/fra/%j_0_log.out
+#source /etc/profile.d/zz_hpcnow-arch.sh
+source ~/.bashrc
+
+echo $SLURMD_NODENAME
+conda activate py39
+export PATH=$PATH:/soft/easybuild/x86_64/software/Miniconda3/4.9.2/bin/
+which python
+export PATH=$PATH:~/projects/simple-wikidata-db/
+
+cd ~/projects/parametric_mem/
+models=("mistralai/Mistral-7B-v0.1" "mistralai/Mistral-7B-Instruct-v0.2" "tiiuae/falcon-7b" "tiiuae/falcon-7b-instruct" "meta-llama/Meta-Llama-3-8B" "meta-llama/Meta-Llama-3-8B-Instruct")
+# models=("/home/mmahaut/projects/parametric_mem/models/m7-ft/checkpoint-390000" "/home/mmahaut/projects/parametric_mem/models/m7i-ft/checkpoint-430000" "/home/mmahaut/projects/parametric_mem/models/t7-ft/checkpoint-350000" "/home/mmahaut/projects/parametric_mem/models/t7i-ft/checkpoint-450000")
+
+# launch sbatch with same parameters for each model
+for model in "${models[@]}"
+do
+    # Set jobname variable
+    if [[ $model == *"nstruct"* ]]; then
+        jobname="${model:0:1}7i"
+    else
+        jobname="${model:0:1}7"
+    fi
+    # jobname=$(dirname $model | xargs basename | cut -d'-' -f1 | cut -d'/' -f2 | cut -d'.' -f1)
+    prefix="wikidata"
+
+
+    echo "Launching for model $model and nli $nli with jobname $jobname"
+    current_path=$(realpath "$0")
+    echo "Current file path: $current_path"
+    head -n 21 $current_path > slurm.sh
+    data_path="./data/$prefix""_incl_$jobname.csv"
+    additional_data_path="./data/$prefix""_nli_$jobname.csv"
+    echo "python /home/mmahaut/projects/parametric_mem/fra_tokens.py -rp $data_path -rp2 $additional_data_path -of /home/mmahaut/projects/parametric_mem/fra_soft/ -sf /home/mmahaut/projects/parametric_mem/fra_soft/ -md $model" >> slurm.sh
+    sed -i "12s/^/#SBATCH --job-name=fra_soft_$jobname\n/" slurm.sh
+    sbatch slurm.sh
+done
