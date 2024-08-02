@@ -62,6 +62,7 @@ do
         # echo "poetry run python ./paramem/probing_task_extract_final_representations.py $model 10 $data_path/$data_file ./probe_representations/$result_file" >> slurm.sh
         result_file="${stem%.*}_${model_name}_pft_reps"
         result_file=$(echo "$result_file" | tr '[:upper:]' '[:lower:]')
+        echo "Launching fine-tuning for model $model with data file $data_file" >> slurm.sh
         echo "poetry run python ./paramem/probing_task_extract_final_representations.py $model 10 $data_path/$data_file ./probe_representations/$result_file ${ckpts[$i]}" >> slurm.sh
         execute_slurm
         ((i++))

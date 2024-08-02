@@ -163,7 +163,7 @@ def test_generation(
     no_context:bool=False,
     sanity_check:bool=False,
     kn_threshold:Optional[float]=None,
-    collect_entropy:bool=False
+    collect_entropy:bool=False,
 ):
     """
     This script is used to test the slot filling capabilities of a model. It generates completions for a prompt and checks if the completions are correct. It saves the results in a csv file.
@@ -226,10 +226,12 @@ def test_generation(
     tokenizer = AutoTokenizer.from_pretrained(model_name, padding_side="left")
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
-    # dataset preparation # refactor, not perfect yet
+    # dataset preparation
     if "jsonl" in dataset_path:
         df = pd.read_json(dataset_path, lines=True)
         df = prepare_data(df, provide_answer=False, instruction=instruction, ans_in_prompt=ans_in_prompt)
+        # TEMPORARY TEST
+        df["result_names"] = df["result_names"].apply(lambda x:x[-1])
     elif "csv" in dataset_path:
         df = pd.DataFrame(load_csv_data(dataset_path, threshold=kn_threshold, sanity_check=sanity_check, no_context=no_context, input_key=input_key, threshold_knowledge=threshold_knowledge))
     elif ".txt" in dataset_path:
@@ -237,6 +239,8 @@ def test_generation(
         df = pd.DataFrame(inputs)
     else:
         raise ValueError("Dataset format not supported")
+    df = df.dropna() # None (for example due to a final empty line) can break the whole process. We discard those.
+
         
     if save_inputs is not None:
         df.to_csv(save_inputs, index=False)

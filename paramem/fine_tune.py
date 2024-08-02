@@ -11,7 +11,7 @@ from accelerate import Accelerator
 from data import load_csv_data, load_pile_data
 
 
-def train_model(model, lr=None, callbacks=None, tr_dataset=None, va_dataset=None, epochs=1000, batch_size=5, output_dir="./models", accelerator=None, eval_steps=100, save_total_limit=3):
+def train_model(model, lr=None, callbacks=None, tr_dataset=None, va_dataset=None, epochs=1000, batch_size=5, output_dir="./models", accelerator=None, eval_steps=100, max_saved_ckpts=None):
     # optimizer = AdamW(model.parameters(), lr=lr)
     # if accelerator is not None:
     #     logging.info("Using accelerator")
@@ -27,7 +27,7 @@ def train_model(model, lr=None, callbacks=None, tr_dataset=None, va_dataset=None
             eval_steps=eval_steps, eval_strategy="steps",
             load_best_model_at_end=True,
             dataloader_drop_last=True,
-            save_total_limit=save_total_limit
+            save_total_limit=max_saved_ckpts
         ),
         eval_dataset=va_dataset,
         # optimizers=(optimizer, None),
@@ -48,8 +48,10 @@ def main(
     epochs: int=10,
     seed: int=42,
     eval_steps: int=100,
+    max_saved_ckpts=3,
     # use_accelerator: bool=True
     ):
+    # max_saved_ckpts is used in TrainerArgs as save_total_limit, and in the early_stopping as patience
     # seed
     torch.manual_seed(seed)
     if Path(output_dir).exists():
@@ -106,12 +108,12 @@ def main(
     # training callbacks
     callbacks = [
         ProgressCallback(),
-        EarlyStoppingCallback(),
+        EarlyStoppingCallback(early_stopping_patience=max_saved_ckpts, ),
     ]
     ## END OF CALLBACKS 
 
     ## TRAIN
-    model = train_model(model, lr=lr, callbacks=callbacks, tr_dataset=tr_dataset, va_dataset=va_dataset, epochs=epochs, batch_size=batch_size, output_dir=output_dir, eval_steps=eval_steps)#, accelerator=accelerator)
+    model = train_model(model, lr=lr, callbacks=callbacks, tr_dataset=tr_dataset, va_dataset=va_dataset, epochs=epochs, batch_size=batch_size, output_dir=output_dir, eval_steps=eval_steps, max_saved_ckpts=max_saved_ckpts)#, accelerator=accelerator)
     ## END OF TRAINING
     
     ## SAVE
