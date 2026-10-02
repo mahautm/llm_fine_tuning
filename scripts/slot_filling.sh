@@ -20,8 +20,8 @@ export PATH=$PATH:~/projects/simple-wikidata-db/
 
 cd ~/projects/paramem/
 # models=("mistralai/Mistral-7B-v0.3" "mistralai/Mistral-7B-Instruct-v0.3" "tiiuae/falcon-7b" "tiiuae/falcon-7b-instruct" "meta-llama/Meta-Llama-3-8B" "meta-llama/Meta-Llama-3-8B-Instruct")
-# models=("EleutherAI/pythia-6.9b")
-models=("meta-llama/Meta-Llama-3.1-8B" "meta-llama/Meta-Llama-3.1-8B-Instruct" "mistralai/Mistral-7B-v0.3" "mistralai/Mistral-7B-Instruct-v0.3" "EleutherAI/pythia-6.9b")
+models=("EleutherAI/pythia-1.4b")
+# models=("Qwen/Qwen2-7B" "Qwen/Qwen2-7B-Instruct") # "mistralai/Mistral-7B-v0.3" "mistralai/Mistral-7B-Instruct-v0.3" "EleutherAI/pythia-6.9b")
 # ckpts=("./models/Met7-ft/checkpoint-2000/pytorch_model.bin" "./models/Met7i-ft/checkpoint-4000/pytorch_model.bin" "./models/Mis7-ft/checkpoint-2000/pytorch_model.bin")
 # ckpts=("./models/Met7-pileft/checkpoint-6000/pytorch_model.bin" "./models/Met7i-pileft/checkpoint-6000/pytorch_model.bin" "./models/Mis7-pileft/checkpoint-6000/pytorch_model.bin")
 
@@ -40,7 +40,7 @@ do
         jobname="${jobname:0:3}7"
     fi
 
-    echo "Launching for model $model and nli $nli with jobname $jobname"
+    echo "echo \"Launching for model $model and nli $nli with jobname $jobname\"" >> slurm.sh
     current_path=$(realpath "$0")
     echo "Current file path: $current_path"
     head -n 21 $current_path > slurm.sh
@@ -53,7 +53,8 @@ do
     # echo "TOKENIZERS_PARALLELISM=false python /home/mmahaut/projects/paramem/paramem/slot_filling.py test-generation --no-threshold-knowledge --input-key="query" --batch-size=8 --save-inputs=./data2/pft_on_sf_$jobname.csv --outpath=\"./data2/pft_on_sf_$jobname.csv\" --log-path=\"./logs2/pft_on_sf_$jobname\" --model-name=\"$model\" --num-return-sequences=1" >> slurm.sh
 
     # echo "TOKENIZERS_PARALLELISM=false python /home/mmahaut/projects/paramem/paramem/slot_filling.py test-generation --save-inputs=./data2/sf_inputs_$jobname.csv --outpath=\"./data2/wikidata_$jobname.csv\" --log-path=\"./logs2/wikidata_$jobname\" --model-name=\"$model\" --num-return-sequences=10 --instruction=\"Accurately fill in the following sentence with the correct word, creating factual sentences as in the examples:\"" >> slurm.sh
-    echo "TOKENIZERS_PARALLELISM=false python /home/mmahaut/projects/paramem/paramem/slot_filling.py test-generation --dataset-path=./benchmark/train.jsonl --input-key=context_query --save-inputs=./data2/sf_inputs_$jobname.csv --outpath=\"./data2/wikidata_$jobname.csv\" --log-path=\"./logs2/wikidata_$jobname\" --model-name=\"$model\" --num-return-sequences=1" >> slurm.sh
+    echo "TOKENIZERS_PARALLELISM=false python ./paramem/slot_filling.py test-generation --dataset-path=./benchmark/train.jsonl --input-key=context_query --save-inputs=./data3/sf_inputs_$jobname.csv --outpath=\"./data3/wikidata_$jobname.csv\" --log-path=\"./logs2/wikidata_$jobname\" --model-name=\"$model\" --num-return-sequences=1" >> slurm.sh
+    echo "python ./paramem/data.py" >> slurm.sh
     # echo "python /home/mmahaut/projects/parametric_mem/slot_filling.py test-generation --outpath=\"./data2/wikidata_$jobname.csv\" --log-path=\"./logs2/wikidata_$jobname\" --model-name=\"$model\"" >> slurm.sh
     sed -i "12s/^/#SBATCH --job-name=sf_$jobname\n/" slurm.sh
 

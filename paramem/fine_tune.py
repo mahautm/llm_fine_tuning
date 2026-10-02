@@ -1,6 +1,6 @@
 import torch
 from torch.optim import AdamW
-from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments, ProgressCallback, EarlyStoppingCallback
+from transformers import AutoModelForCausalLM, TrainingArguments, ProgressCallback, EarlyStoppingCallback
 from trl import SFTTrainer
 import pandas as pd
 import typer
@@ -9,9 +9,12 @@ from datasets import Dataset
 import logging
 from accelerate import Accelerator
 from data import load_csv_data, load_pile_data
+from accelerate import load_checkpoint_and_dispatch
+import random
+torch.backends.cuda.matmul.allow_tf32 = True
+torch.backends.cudnn.allow_tf32 = True
 
-
-def train_model(model, lr=None, callbacks=None, tr_dataset=None, va_dataset=None, epochs=1000, batch_size=5, output_dir="./models", accelerator=None, eval_steps=100, max_saved_ckpts=None):
+def train_model(model, lr=None, callbacks=None, tr_dataset=None, va_dataset=None, epochs=1000, batch_size=5, output_dir="./models", accelerator=None, eval_steps=50, max_saved_ckpts=None):
     # optimizer = AdamW(model.parameters(), lr=lr)
     # if accelerator is not None:
     #     logging.info("Using accelerator")
@@ -23,11 +26,15 @@ def train_model(model, lr=None, callbacks=None, tr_dataset=None, va_dataset=None
         args=TrainingArguments(
             output_dir=output_dir,
             num_train_epochs=epochs,
-            per_device_train_batch_size=batch_size, 
+            per_device_train_batch_size=batch_size,
+            report_to='wandb',
+            do_eval=True,
             eval_steps=eval_steps, eval_strategy="steps",
             load_best_model_at_end=True,
             dataloader_drop_last=True,
-            save_total_limit=max_saved_ckpts
+            save_total_limit=max_saved_ckpts,
+            # gradient_checkpointing=True,
+            # gradient_accumulation_steps=4,
         ),
         eval_dataset=va_dataset,
         # optimizers=(optimizer, None),
@@ -48,7 +55,7 @@ def main(
     epochs: int=10,
     seed: int=42,
     eval_steps: int=100,
-    max_saved_ckpts=3,
+    max_saved_ckpts:int=10,
     # use_accelerator: bool=True
     ):
     # max_saved_ckpts is used in TrainerArgs as save_total_limit, and in the early_stopping as patience
@@ -73,15 +80,23 @@ def main(
     #     accelerator = None
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        device_map=None#"auto" if not use_accelerator else None,
-        # dtype=torch.bfloat16 if use_accelerator else None
-    )
+        # device_map= "balanced",# if not use_accelerator else None,
+        # torch_dtype=torch.float16
+        )
+
 
     ## DATA preparation
     if ".csv" in train_file:
-        df = load_csv_data(train_file, "query", False)
-        df["expected_answers"] = df["expected_answers"].apply(lambda x: x[0])
-        df["text"] = df.apply(lambda x: x["query"] + " " + x["expected_answers"], axis=1)
+        inputs = load_csv_data(train_file, "query", False, threshold_knowledge=False)
+        df = pd.DataFrame(inputs)
+        df = df.dropna()
+        rng = random.Random(seed)
+        df["expected_answers"] = df["expected_answers"].apply(
+            lambda x: pd.eval(x)[rng.randint(0, len(pd.eval(x)) - 1)]
+        )
+        print(df["expected_answers"].iloc[0])
+        df["text"] = df.apply(lambda x: x["query"] + " " + str(x["expected_answers"]), axis=1)
+        print(f"There are {df.shape[0]} samples in the dataset")
 
     elif ".txt" in train_file:
         inputs = load_pile_data(train_file, "text")
@@ -110,6 +125,7 @@ def main(
         ProgressCallback(),
         EarlyStoppingCallback(early_stopping_patience=max_saved_ckpts, ),
     ]
+    callbacks=None
     ## END OF CALLBACKS 
 
     ## TRAIN
@@ -117,6 +133,7 @@ def main(
     ## END OF TRAINING
     
     ## SAVE
+    model.to("cpu")
     model.save_pretrained(output_dir)
     ## END OF SAVE
 

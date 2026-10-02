@@ -1,8 +1,9 @@
 import torch
 from transformers import AutoModelForCausalLM
 # from torch.distributed._shard.state_dict import FullOptimStateDictConfig, FullStateDictConfig, StateDictType
+import torch.distributed.checkpoint as dist_cp
 from torch.distributed.checkpoint import FileSystemReader
-from accelerate.utils.fsdp_utils import merge_fsdp_weights
+from accelerate.utils import merge_fsdp_weights
 from pathlib import Path
 
 def load_a_checkpoint(model, distcp_checkpoint_path: str):
@@ -17,15 +18,14 @@ def load_a_checkpoint(model, distcp_checkpoint_path: str):
                     storage_reader= FileSystemReader(distcp_checkpoint_path),
                     no_dist=True,
                 )
-    return state_dict["model"], state_dict["optimizer"]
+    return state_dict["model"]#, state_dict["optimizer"]
     
-def load_distrib_model(model, path):
-    print(f"preparing distributed model from {path} for {model.__class__.__name__}")
+def load_distrib_model(path):
+    print(f"preparing distributed model from {path}")
     output_dir = Path(path).parent
     merge_fsdp_weights(path, output_dir, safe_serialization=False)
     state_dict = torch.load(output_dir / "pytorch_model.bin")
-    model.load_state_dict(state_dict)
-    return model
+    return state_dict
 
 if __name__ == "__main__":
     model = AutoModelForCausalLM.from_pretrained("mistralai/Mistral-7B-v0.3")

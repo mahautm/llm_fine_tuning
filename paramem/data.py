@@ -3,6 +3,7 @@ import itertools
 import random
 import sys
 import numpy as np
+from pathlib import Path
 
 # TODO: generalise usage of these sentences throughout the code instead of reimplementing each time
 def load_csv_data(data_file, threshold=None, sanity_check=False, no_context=False, input_key="query", threshold_knowledge=True, seed=42):
@@ -52,7 +53,7 @@ def load_pile_data(data_file, input_key="query", seed=42):
         inputs = f.readlines()
     # remove last space-delimited word
     query = list(map(lambda x: " ".join(x.split(" ")[:-1]).strip(), inputs))
-    expected_answers = list(map(lambda x: x.split(" ")[-1].strip(), inputs))
+    expected_answers = list(map(lambda x: [x.split(" ")[-1].strip()], inputs))
     return {input_key: query, "expected_answers": expected_answers}
 
 
@@ -291,13 +292,25 @@ def prepare_as_tsv(data, output_file):
     data.to_csv(output_file, sep="\t", index=False)   
 
 def find_common_data_for_training(dataset_paths, intersection_column, kept_column):
-    # for every file keep only the index where the intersection metric is True
-    intersection_idxs=[]
+    assert len(dataset_paths) > 0, "dataset_paths cannot be empty" 
+    idxs=None
+    len_df=None
     for dp in dataset_paths:
-        df=pd.load_csv(dp)
-        idxs=df.index[df[intersection_column] == True].tolist()
-        if len(intersection_idxs) == 0:
-            intersection_idxs = set(idxs)
+        df=pd.read_csv(dp)
+        idx=set(df[df[intersection_column]==False].index)
+        if idxs==None:
+            idxs=idx
+            len_df=len(df)
         else:
-            intersection_idxs=set.intersection(intersection_idxs,set(idxs))
-    inputs=df[df["index"]==list(intersection_idxs)][kept_column]
+            idxs=idxs.intersection(idx)
+            assert len_df == len(df), f"all csv in dataset_paths should have the same size. Here found {len_df} and {len(df)}"
+    bool_idx=[i in idxs for i in range(len_df)]
+    outputs=df[bool_idx][kept_column]
+    return outputs
+
+if __name__ == "__main__":
+    dps=list(Path("./data3").glob("wikidata*.csv"))
+    ic="direct_follow"
+    kc="context_query"
+    series=find_common_data_for_training(dps, ic, kc)
+    series.to_csv("./data3/wikidata_common_errors.txt", sep='\t', index=False,header=False)

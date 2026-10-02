@@ -1,0 +1,668 @@
+P54
+L: member of sports team
+D: sports teams or clubs that the subject currently represents or formerly represented
+The sports teams that [X] represents is [Y]
+The athletic squads that [X] manages are of the nature of [Y]
+The sports teams that fall under the jurisdiction of [X] are defined by [Y]
+The athletic teams under the auspices of [X] are characterized by [Y]
+The sports teams that [X] leads are typified by [Y]
+P166
+L: award received
+D: award or recognition received by a person, organisation or creative work
+[X] was awarded the [Y]
+The [Y] was awarded to [X]
+[X] was the fortunate one to receive the [Y]
+[X] was the privileged one to receive the [Y]
+[X] was the proud recipient of the [Y]
+[X] was the deserving one to receive the [Y]
+[X] was the grateful recipient of the [Y]
+[X] was the gracious recipient of the [Y]
+[X] was the honored recipient of the [Y]
+[X] was the lucky one to be given the [Y]
+The [Y] was given to [X]
+[X] was presented with the [Y]
+The [Y] was presented to [X]
+[X] was the esteemed recipient of the [Y]
+[X] was the winner of the [Y]
+[X] was granted the [Y]
+[X] was the fortunate recipient of the [Y]
+[X] was the recipient of the [Y]
+The [Y] was bestowed upon [X]
+[X] received the honor of the [Y]
+[X] was the deserving recipient of the [Y]
+[X] was the successful one to obtain the [Y]
+The [Y] was conferred upon [X]
+[X] was honored with the [Y]
+[X] was conferred the [Y]
+P69
+L: educated at
+D: educational institution attended by subject
+The institution [X] was educated at is [Y]
+The institution [X] was educated in [Y]
+[Y] is the institution that educated [X]
+The institution [X] was a student of [Y]
+[Y] is the place where the institution [X] was educated
+[Y] is where the institution [X] received its education
+The institution [X] studied at [Y]
+P1923
+L: participating team
+D: Like 'Participant' (P710) but for teams. For an event like a cycle race or a football match you can use this property to list the teams and P710 to list the individuals (with 'member of sports team' (P54)' as a qualifier for the individuals)
+The participating team at [X] is [Y]
+The [X] encounter's team engages in a [Y] manner
+The [X] showdown's team behaves in a [Y] fashion
+The [X] bout's team adopts a [Y] form
+The [X] match's team implements a [Y] tactic
+The [X] duel's team practices a [Y] style
+The [X] contest's team utilizes a [Y] method
+The [X] tournament's team portrays a [Y] image
+The [X] race's team follows a [Y] plan
+The [X] competition's team members present a [Y] outlook
+The [X] game's team adopts a [Y] approach
+The [X] clash's team takes on a [Y] position
+The [X] meet's team adheres to a [Y] strategy
+The team representing [X] displays a [Y] behavior during the competition
+The [X] confrontation's team acts in a [Y] manner
+In the context of [X], the team shows a [Y] demeanor
+At the [X] event, the competing team exhibits a [Y] attitude
+The [X] derby's team employs a [Y] technique
+The [X] face-off's team conducts itself in a [Y] way
+The [X] battle's team assumes a [Y] stance
+P527
+L: has part
+D: part of this subject; inverse property of "part of" (P361). See also "has parts of the class" (P2670).
+[X] consists of [Y]
+The makeup of [X] is comprised of [Y]
+[X] is a composite of [Y]
+[X] is constituted by [Y]
+[X] is made up of various [Y]
+P31
+L: instance of
+D: that class of which this subject is a particular example and member (subject typically an individual member with a proper name label); different from P279; using this property as a qualifier is deprecated—use P2868 or P3831 instead
+[X] is an instance of [Y]
+[X] represents a specific example of [Y]
+[X] is a kind of [Y]
+[X] is a specific example of the [Y] type
+[X] is a type of instance of [Y]
+[X] is a member of the [Y] family
+[X] is a subclass of [Y]
+[X] is a specific occurrence of [Y]
+[X] is an illustration of [Y]
+[X] is a realization of [Y]
+[X] is a specific manifestation of the [Y] concept
+[X] can be categorized as a type of [Y]
+[X] is a particular implementation of [Y]
+[X] is a representative example of [Y]
+[X] is a specific application of the [Y] principle
+[X] is a particular realization of [Y]
+[X] is a form of [Y]
+[X] is a particular manifestation of [Y]
+[X] is a specific case of [Y]
+[X] is a manifestation of the concept [Y]
+[X] is a specific application of [Y]
+[X] is a species of [Y]
+[X] is a particular instance of [Y]
+[X] is a variant of [Y]
+[X] is a specific instance of the [Y] category
+[X] is a specific instance of the [Y
+[X] is a concrete example of [Y]
+P2384
+L: statement describes
+D: formalization of the statement contains a bound variable in this class
+The statement of [X] describes [Y]
+[X]'s statement expresses [Y]'s attributes
+[Y] is the subject of [X]'s account
+[Y] is the subject matter of [X]'s statement
+[X]'s pronouncement reveals the essence of [Y]
+[X]'s statement offers a portrayal of [Y]
+[X]'s statement reveals details about [Y]
+The expression of [X] conveys information about [Y]
+[Y] is the topic of [X]'s statement
+[X]'s statement illustrates [Y]
+[Y] is described in the language of [X]
+[Y] is the theme of [X]'s statement
+[X]'s statement defines [Y]
+[Y] is described in the words of [X]
+The declaration made by [X] pertains to [Y]
+[X]'s statement provides a description of [Y]
+[X]'s statement explains [Y]
+[X]'s proclamation encapsulates the nature of [Y]
+[Y] is depicted in the expression of [X]
+[X]'s statement presents [Y] in a particular way
+[X]'s assertion outlines the characteristics of [Y]
+[Y] is the subject of [X]'s declaration
+P1136
+L: solved by
+D: person that solved a scientific question
+[X] was solved by [Y]
+[X] represented a dilemma that was resolved by [Y]
+[X] presented a conundrum that was unraveled by [Y]
+[X] posed a question that was answered by [Y]
+[Y] furnished the answer to the puzzle that was [X]
+[X] was a mystery that was unraveled by [Y]
+[X] encountered a challenge that was successfully overcome by [Y]
+[Y] brought about the resolution of [X]
+[X] was an enigma that was deciphered by [Y]
+[Y] was instrumental in the solution to [X]
+[X] was a conundrum that was solved by [Y]
+[Y] was the catalyst for the solution of [X]
+[X] faced a difficulty that was mastered by [Y]
+[Y] was the linchpin in the resolution of [X]
+[Y] was the driving force behind the resolution of [X]
+[Y] provided the solution to [X]
+The problem of [X] was effectively addressed by [Y]
+P102
+L: member of political party
+D: the political party of which this politician is or has been a member
+The political party [X] is a member of is [Y]
+The political organization to which [X] belongs is characterized as [Y]
+[X]'s political affiliation is described as [Y]
+P122
+L: basic form of government
+D: subject's government
+The basic form of government of [X] is a/an [Y]
+The government of [X] is fundamentally based on a [Y] structure
+The governing system of [X] can be classified as a [Y]
+The administrative setup of [X] can be defined as a [Y]
+The political setup of [X] can be referred to as a [Y] system
+The basic form of the political system in [X] is that of a [Y]
+The essential nature of the government in [X] is that of a [Y]
+The administrative system of [X] can be considered as a [Y]
+The political framework of [X] can be labeled as a [Y]
+The fundamental type of administration in [X] is characterized as a [Y]
+The government of [X] is fundamentally a [Y] system
+In essence, the political structure of [X] can be described as a [Y]
+The primary form of governance in [X] is identified as a [Y]
+P1906
+L: office held by head of state
+D: political office that is fulfilled by the head of state of this item
+The office held by the head of state of [X] is [Y]
+The office of the president of [X] is recognized for its [Y] traits
+The position of the chief executive of [X] is characterized by [Y]
+The head of state in [X] occupies a post that is marked by the features of [Y]
+The office of the prime minister of [X] is characterized by the elements of [Y]
+The office of the prime minister of [X] is known for its [Y] qualities
+The head of state in [X] presides over an office that is [Y]
+The head of state in [X] holds a position that is denoted as [Y]
+The head of state in [X] occupies a role that is signified by [Y]
+The head of state in [X] holds the position that is described as [Y]
+The office of the monarch of [X] is distinguished by the aspects of [Y]
+The head of state in [X] occupies a post that is identified by [Y]
+The office of the monarch of [X] is marked by the features of [Y]
+The office of the president of [X] is distinguished by the attributes of [Y]
+The role of the head of government in [X] is defined as [Y]
+P35
+L: head of state
+D: official with the highest formal authority in a country/state
+The head of state of [X] is [Y]
+The monarch or president of X is addressed as Y
+X's head of state is referred to as Y
+The government head of X is referred to as Y
+Y is the title of the chief magistrate of X
+The president of the republic of X is acknowledged as Y
+The ruler of country X is characterized by Y
+The prime minister of X is known as Y
+Y is the title of the head of X's government
+Country X's chief executive is described as Y
+Y is the title held by the leader of nation X
+Y is the office held by the leader of X
+The leader of X's government is called Y
+The monarch or president of X is denoted as Y
+The monarch of X is acknowledged as Y
+X's chief magistrate is identified as Y
+X's political leader is denoted as Y
+X's president is recognized as Y
+Y is the position of the leader in X
+The chief executive of X is known as Y
+The sovereign of state X is identified as Y
+P1313
+L: office held by head of government 
+D: political office that is fulfilled by the head of the government of this item
+The office held by the head of government of [X] is the [Y]
+The office of the prime minister/president of [X] is titled the [Y]
+The [Y] is the title of the head of state in [X]
+The head of state in [X] occupies the role of the [Y]
+The [Y] is the position of the head of government in [X]
+The chief magistrate/ruler of [X] is called the [Y]
+The position of the chief executive of [X] is referred to as the [Y]
+The leader of [X] holds the office of the [Y]
+The [Y] is the name given to the office of the head of government in [X]
+The head of government in [X] holds the position of the [Y]
+The head of state in [X] is known as the [Y]
+The [Y] is the title given to the head of government in [X]
+The [Y] is the title of the head of government in [X]
+The [Y] is the office held by the head of government in [X]
+The head of government in [X] is referred to as the [Y]
+The head of state in [X] is the one who holds the [Y]
+The [Y] is the office that the head of government in [X] holds
+P6
+L: head of government
+D: head of the executive power of this town, city, municipality, state, country, or other governmental body
+The head of government of [X] is [Y]
+The head of the executive, legislative, and judicial branches in [X] is [Y]
+[Y] is the head of the administration in [X]
+[Y] is the chief administrator in [X]
+The chief executive of [X] is described as [Y]
+The head of the state in [X] is [Y]
+The government of [X] is presided over by [Y]
+The governing body of [X] is headed by [Y]
+[Y] is the head of the executive branch in [X]
+The leader of state in [X] is identified as [Y]
+The political administration of [X] is headed by [Y]
+[Y] is the head of the government and administration in [X]
+The head of the country in [X] is [Y]
+The government leader in [X] is [Y]
+The head of the executive and legislative branches in [X] is [Y]
+The head of the government and country in [X] is [Y]
+The political head of [X] is [Y]
+P2176
+L: drug or therapy used for treatment
+D: drug, procedure, or therapy that can be used to treat a medical condition
+The standard treatment for patients with [X] is a drug such as [Y]
+Patients suffering from [X] are usually prescribed a drug such as [Y] for treatment
+Patients diagnosed with [X] are typically treated with a drug such as [Y]
+A drug such as [Y] is the standard option for treating [X]
+A medication like [Y] is the standard therapy for managing [X]
+For individuals diagnosed with [X], the typical course of action involves administering a medication like [Y]
+Individuals diagnosed with [X] are typically given a drug such as [Y] for therapy
+The most common treatment for [X] is a medication like [Y]
+[Y] is the standard drug for treating [X]
+The go-to therapy for those diagnosed with [X] is often a medication like [Y]
+The standard medication for managing [X] is [Y]
+The standard approach to treating [X] is through the use of a medication like [Y]
+The typical treatment for [X] is a drug such as [Y]
+A medication like [Y] is commonly used to treat patients with [X]
+Patients with [X] are commonly treated with a drug such as [Y]
+P2293
+L: genetic association
+D: general link between a disease and the causal genetic entity, if the detailed mechanism is unknown/unavailable
+Gene [X] has a genetic association with diseases such as [Y]
+The genetic makeup of Gene [X] is associated with diseases such as [Y]
+Diseases such as [Y] are linked to Gene [X] genetically
+Gene [X] is a gene that is associated with an increased risk for diseases such as [Y]
+Gene [X] is a genetic risk factor for diseases such as [Y]
+Gene [X] is a gene that is linked to diseases such as [Y]
+Individuals with Gene [X] are at an increased risk for diseases such as [Y]
+Gene [X] is a gene that is strongly linked to diseases such as [Y]
+Gene [X] is implicated in the development of diseases such as [Y]
+Gene [X] is a gene that is believed to play a role in diseases such as [Y]
+Gene [X] is a gene that is implicated in diseases such as [Y]
+The presence of Gene [X] in an individual's genome increases their risk for diseases such as [Y]
+Gene [X] is a gene that is known to be associated with diseases such as [Y]
+Diseases like [Y] are linked genetically to Gene [X]
+The genetic profile of Gene [X] is associated with diseases such as [Y]
+A genetic connection exists between Gene [X] and diseases including [Y]
+Diseases such as [Y] are associated with Gene [X] genetically
+Individuals carrying Gene [X] are more likely to develop diseases such as [Y]
+Gene [X] is a gene that is suspected to be involved in diseases such as [Y]
+P4044
+L: therapeutic area
+D: disease area in which a medical intervention is applied
+[X] cures diseases such as [Y]
+[X] remedies afflictions akin to [Y]
+[X] heals diseases having similar characteristics to [Y]
+[X] effectively treats illnesses like [Y]
+[X] eradicates diseases exhibiting traits akin to [Y]
+[X] heals diseases that resemble [Y]
+[X] eradicates diseases similar to [Y]
+[X] treats diseases that are akin to [Y]
+[X] recovers individuals from diseases like [Y]
+[X] offers cure for ailments similar to [Y]
+[X] remedies diseases that are similar to [Y]
+[X] mends diseases resembling [Y]
+[X] alleviates diseases showing traits akin to [Y]
+[X] alleviates diseases that resemble [Y]
+[X] cures ailments that are akin to [Y]
+[X] heals ailments akin to [Y]
+[X] cures diseases with symptoms like [Y]
+[X] provides relief for diseases akin to [Y]
+[X] remedies diseases displaying symptoms similar to [Y]
+[X] eradicates ailments akin to [Y]
+[X] restores health from diseases akin to [Y]
+P780
+L: symptoms and signs
+D: possible symptoms of a medical condition
+[X] has symptoms such as [Y]
+[X] manifests symptoms akin to [Y]
+[X] exhibits signs including [Y]
+[X] shows characteristics of [Y]
+[X] displays indications of [Y]
+P4006
+L: overrules
+D: case that supersedes another case
+[X] overrules [Y]
+[X] has the authority to override [Y]
+[X] has the power to outrank [Y]
+[X] has the power to outshine [Y]
+The decision of [X] supersedes that of [Y]
+[X] has the dominion over [Y]
+[X] has the control over [Y]
+[X] has the authority to trump [Y]
+[X] has jurisdiction over [Y]
+[X] takes precedence over [Y]
+P3014
+L: laws applied
+D: the constitutional and statutory provisions that were the primary basis for a decision or law
+[X] applies or derives legal authority from [Y]
+[Y] grants [X] the legal right to act
+[X] is a legal entity recognized by [Y]
+[Y] is the legal origin of the authority of [X]
+[Y] is the legal source of [X]
+[X] is authorized by [Y] under law
+[X] is a legal creation of [Y]
+[Y] is the legal originator of [X]
+The legal power of [X] stems from [Y]
+[Y] is the legal foundation for [X]
+[X] is legally sanctioned by [Y]
+[Y] is the source of [X]'s legal legitimacy
+[Y] is the legal foundation for the establishment of [X]
+[X] is legally empowered by [Y]
+[X] is legally derived from the power of [Y]
+[Y] is the legal origin of [X]
+[X] is legally derived from the authority of [Y]
+[Y] is the legal basis for the existence of [X]
+[X] derives its legal existence from [Y]
+[X] is legally established by [Y]
+[X] is legally derived from [Y]
+[X] is a legally recognized entity by [Y]
+[X] obtains its legal basis from [Y]
+[X] is legally bound by [Y]
+[X] derives its legal validity from [Y]
+[Y] confers legal authority upon [X]
+P2568
+L: repealed by 
+D: document is repealed/inactived by specified other document
+[X] is repealed by [Y]
+[X] is no longer in force due to the repeal by [Y]
+[Y] has abrogated [X] and made it obsolete
+[Y] has repealed [X] and made new provisions
+The legislation [X] is no longer in effect due to the repeal by [Y]
+[X] is no longer binding law due to the repeal by [Y]
+[X] has been abolished by the enactment of [Y]
+[Y] has annulled [X] and taken its place
+[X] is repealed and replaced by [Y]
+[X] is no longer the law of the land, having been repealed by [Y]
+[Y] has revoked [X] and replaced it with new legislation
+P5826
+L: majority opinion by 
+D: judicial opinion agreed to by more than half of the members of a court
+[X] was a majority opinion written by [Y]
+The decision in the case was authored by [Y] and supported by the majority of the judges, including [X]
+[X] penned the judgment that received the approval of more than half of the judges, with [Y] being the author
+P1591
+L: defendant
+D: person or organization accused, at a trial
+The defendant in [X] is [Y]
+[Y] is the person being prosecuted in [X]
+[X]'s legal proceedings have [Y] as the defendant
+The individual in the dock for [X] is [Y]
+The defendant in the [X] proceedings is [Y]
+[Y] is the one being tried for [X]
+[Y] is the person on trial in [X], accused of [crime or offense]
+P111
+L: measured physical quantity
+D: value of a physical property expressed as number multiplied by a unit
+The physical quantity [X] is used to measure is [Y]
+[X] is the tool used to gauge the level or intensity of [Y]
+The value of [X] is utilized to assess the amount of [Y]
+[X] is the means by which we quantify the magnitude or amount of [Y]
+The magnitude [X] is employed to quantify the extent of [Y]
+P8111
+L: recommended unit of measurement
+D: unit in which a quantity is measured as recommended by a standard (SI, ISO, IEC, etc.)
+[X] can be measured in the unit of [Y]
+[X] can be expressed in the unit of measurement [Y]
+[X] can be quantified as [Y]
+[X] can be measured using the unit [Y]
+[X] can be assessed in the unit [Y]
+[X] can be measured in terms of [Y]
+[X] can be evaluated using the unit [Y]
+[X] can be expressed in the unit [Y] for measurement
+[X] can be assessed in the unit of measurement [Y]
+[X] can be determined in units of measurement [Y]
+[X] can be determined in the unit [Y]
+[X] can be gauged in the unit [Y]
+[X] can be quantified in the unit of measurement [Y]
+[X] can be quantified in the unit [Y]
+[X] can be measured in the unit [Y] of measurement
+The quantity of [X] is expressible in terms of [Y]
+[X] can be assessed using the unit of measurement [Y]
+[X] is quantifiable in units of [Y]
+P277
+L: programming language
+D: the programming language(s) in which the software is developed
+The programming language in which [X] was developed is [Y]
+[X] was constructed using the [Y] language
+[X] was crafted using the [Y] programming language
+The [Y] programming language is the basis for [X]
+The origin of [X] lies in the [Y] programming language
+[X] was born from the [Y] programming language
+[X] was written in the [Y] programming language
+[X] is a product of the [Y] programming language
+The language used for creating [X] is identified as [Y]
+P1141
+L: number of processor cores
+D: number of independent actual processing units (*not* threads)
+The number of processor cores for [X] is [Y]
+[Y] is the number of processor cores in [X]
+[Y] is the processor core count for [X]
+The processor in [X] has a core count of [Y]
+[X]'s processor consists of [Y] cores
+[X] boasts a processor with [Y] cores
+[X]'s processor has a total of [Y] processing units
+[X] is equipped with a [Y]-core processor
+[X]'s processor architecture includes [Y] cores
+P306
+L: operating system
+D: operating system (OS) on which a software works or the OS installed on hardware
+[X] can be executed on operating systems such as [Y]
+[X] can be performed on a wide array of operating systems, such as [Y]
+[X] can be executed on multiple operating systems, including [Y]
+[X] can be managed on numerous operating systems, including [Y]
+[X] can be executed across various operating systems, including [Y]
+[X] can be managed on a multitude of operating systems, including [Y]
+[X] can be executed on several operating systems, including [Y]
+[X] can be performed on platforms such as [Y] operating systems
+The operation [X] is compatible with various operating systems including [Y]
+[X] can be implemented on a number of operating systems, including [Y]
+[X] can be processed on various operating systems, including [Y]
+[X] is supported by multiple operating systems such as [Y]
+[X] can be carried out on diverse operating systems such as [Y]
+[X] can run on different operating systems like [Y]
+[X] can be executed on a range of platforms, including [Y] operating systems
+[X] can be executed on a variety of operating systems, including [Y]
+[X] can be implemented on a broad spectrum of operating systems, including [Y]
+[X] can be processed on numerous operating systems, such as [Y]
+[X] can be performed on a selection of operating systems, such as [Y]
+[X] can be processed on different operating systems, including [Y]
+[X] can be implemented on a range of operating systems, including [Y]
+P135
+L: movement
+D: literary, artistic, scientific or philosophical movement or scene associated with this person or work
+The movement [X] made is  [Y]
+The motion [X] brought about [Y]
+[Y] was the result of the motion [X]
+The motion [X] initiated was [Y]
+The action [X] took resulted in [Y]
+[Y] was the reaction to the motion [X]
+[Y] was the outcome of the motion [X] made
+The gesture [X] produced was [Y]
+The movement [X] resulted in [Y]
+The motion [X] generated was [Y]
+The motion [X] brought forth [Y]
+The movement [X] caused [Y]
+P737
+L: influenced by
+D: this person, idea, etc. is informed by that other person, idea, etc., e.g. “Heidegger was influenced by Aristotle”
+The person or idea [X] was influenced by is [Y]
+[Y] played a role in the genesis of [X]
+[X] was shaped by the impact of [Y]
+[Y] was a major influence on the shaping of [X]
+[Y] had a profound effect on the emergence of [X]
+[Y] left a significant mark on the development of [X]
+[X] was shaped by the thoughts of [Y]
+[X] was influenced by the teachings of [Y]
+[X] was shaped by the influence of [Y]
+[Y] was a significant influence on the growth of [X]
+[Y] had an impact on the evolution of [X]
+[Y] exerted a strong influence on the development of [X]
+P38
+L: currency
+D: currency used by item
+The currency of [X] is [Y]
+[Y] is the legal tender of [X]
+The monetary unit of [X] is equal to [Y]
+The value of [X]'s currency is [Y]
+P355
+L: subsidiary
+D: subsidiary of a company or organization; generally a fully owned separate corporation. Compare with "business division" (P199). Opposite of parent organization (P749).
+The subsidiary of [X] is [Y]
+X's subsidiary is labeled as Y
+Y is the affiliate of corporation X
+Y is the subsidiary division of X
+X's subsidiary is termed as Y
+X's subsidiary is referred to as Y
+Y is the subsidiary arm of X
+X's subsidiary is called Y
+Y is the subsidiary enterprise of X
+Y is the subsidiary concern of X
+Y is the subsidiary entity of X
+X's subsidiary is designated as Y
+The branch of company X is represented by Y
+P414
+L: stock exchange
+D: exchange on which this company is traded
+The stock exchange on which [X] is traded is [Y]
+The stock market where [X] is bought and sold is referred to as [Y]
+The market where [X] is bought and sold is characterized as [Y]
+The marketplace for [X] is identified as [Y]
+P452
+L: industry
+D: specific industry of company or organization
+The industry of [X] is [Y]
+The business sector of X is characterized by Y
+P50
+L: author
+D: main creator(s) of a written work (use on works, not humans); use P2093 when Wikidata item is unknown or does not exist
+The author of [X] is [Y]
+[Y] is the originator of composition [X]
+The creator of work [X] is individual [Y]
+P170
+L: creator
+D: maker of this creative work or other object (where no more specific property exists)
+The creator of [X] is [Y]
+Y is the architect of X
+Y is the person who conceived X
+Y is the designer of X
+Y is the inventor of X
+Y is the author of X
+Y is the mastermind of X's invention
+X is the work of Y
+Y is the father of X
+Y is the brainchild behind X
+Y is responsible for the development of X
+The originator of X is identified as Y
+P86
+L: composer
+D: person(s) who wrote the music [for lyricist, use "lyrics by" (P676)]
+The composer of [X] is [Y]
+Y is the creator of musical work X
+Y is the originator of X
+Y is the artist behind X
+Y is the mastermind behind X
+Y is the author of composition X
+Y is the brains behind X
+Y is responsible for the creation of X
+P1086
+L: atomic number
+D: number of protons found in the nucleus of the atom
+The atomic number of element [X] is [Y]
+The atomic number of [X] is given the value [Y]
+The element [X] has an atomic number equal to [Y]
+The atomic number of a single atom of [X] is [Y]
+[Y] is the atomic number of the chemical symbol [X]
+The atomic number of [X] is equal to [Y]
+P8000
+L: electron configuration
+D: distribution of electrons of an atom or ion, using a standard notation
+The electron configuration of element [X] is [Y]
+The electronic makeup of X is shown as [Y]
+The atomic electrons of X are positioned in [Y]
+The electronic configuration of the atom of X is detailed as [Y]
+The arrangement of electrons in the atomic orbitals of element X is given by [Y]
+The electronic structure of the element X is portrayed as [Y]
+The electron arrangement in the atomic shells of X is illustrated as [Y]
+The electronic configuration of the atom of X is depicted as [Y]
+P61
+L: discoverer or inventor
+D: subject who discovered, first described, invented, or developed this discovery or invention
+[X] was discovered by [Y]
+[X] was identified by the keen observation of [Y]
+[X] came to light through the research of [Y]
+[X] was unearthed by the diligent efforts of [Y]
+[X] was identified through [Y]'s rigorous exploration
+[X] was unearthed during [Y]'s intensive study
+[X] was discovered as a result of [Y]'s investigation
+[X] was revealed by the meticulous work of [Y]
+[X] was stumbled upon by [Y]
+[X] was uncovered by the investigative skills of [Y]
+[X] was brought to light by [Y]'s diligent search
+[X] was discovered in the process of [Y]'s research
+[X] was unearthed during [Y]'s exploration
+[X] was brought to light by [Y
+[X] was brought to notice by [Y]'s keen observation
+[X] was detected by the vigilance of [Y]
+[X] was found by the perseverance of [Y]
+[X] was uncovered by [Y]'s thorough investigation
+[X] was identified through [Y]'s extensive research
+[X] was brought to notice by [Y]
+[X] was discovered in the course of [Y]'s studies
+[X] was identified by [Y]'s careful examination
+[X] was uncovered by [Y]'s painstaking efforts
+P575
+L: time of discovery or invention
+D: date or point in time when the item was discovered or invented
+The date or year when [X] was discovered is [Y]
+The year [Y] saw the discovery of [X]
+The year [Y] is significant for the discovery of [X]
+[X] was discovered in the past year [Y]
+[X] was discovered during the year [Y]
+[X] was discovered in the year that is now [Y]
+The discovery of [X] dates back to the year [Y]
+The discovery of [X] occurred in the year [Y], historically
+[X] was identified in the year [Y]
+[X] was discovered in the year [Y], making it a new discovery
+[X] was discovered in the ancient year [Y]
+[X] was uncovered in the year [Y]
+The discovery of [X] occurred in the year [Y]
+[X] was found in the year [Y]
+The year [Y] marks the discovery of [X]
+[X] was discovered in the year [Y], recently
+[X] was discovered in the year [Y], long ago
+The year [Y] is the year of discovery for [X]
+In the year [Y], [X] was unearthed
+The discovery of [X] took place in the year [Y]
+P189
+L: location of discovery
+D: where the item was located when discovered
+The location where [X] was discovered is [Y]
+The location of the finding of [X] is designated as [Y]
+The area where [X] was found is referred to as [Y]
+[X] was discovered in a place that is known as [Y]
+The spot where [X] was found is identified as [Y]
+[X] was unearthed at a place that is described as [Y]
+The site of the discovery of [X] is celebrated as [Y]
+The site of the discovery of [X
+[X] was discovered at a place that is well-known as [Y]
+[X] was discovered in a place that is named [Y]
+[X] was found in a place that is acclaimed as [Y]
+[X] was found in a place that is renowned as [Y]
+The location of the finding of [X] is esteemed as [Y]
+The location of the unearthing of [X] is famed as [Y]
+[X] was found at a place that bears the name [Y]
+[X] was uncovered in a location that can be termed as [Y]
+[X] was uncovered at a place that is called [Y]
+[X] was unearthed at a place that is revered as [Y]
+The site of the discovery of [X] is recognized as [Y]
+The location of the discovery of [X] is commonly called [Y]
+The site of the unearthing of [X] is labeled as [Y]
+The site of the discovery of [X] is characterized by [Y]

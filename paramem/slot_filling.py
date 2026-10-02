@@ -9,14 +9,17 @@ import typer
 from typing import List, Optional
 from datasets import load_dataset, Dataset
 from torch.utils.data import DataLoader
-from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, AutoModelForSequenceClassification
+from transformers import AutoModelForCausalLM, AutoTokenizer, AutoModelForSequenceClassification
 from paramem.data import prepare_data, no_context_to_csv_format
-from paramem.load_distrib_model import load_distrib_model
+from paramem.load_distrib_model import load_distrib_model, load_a_checkpoint
 from data import load_csv_data, load_pile_data
 
 import accelerate
 app = typer.Typer()
-
+def collate_fn(batch):
+    return {
+        key: [item[key] for item in batch] for key in batch[0].keys()
+    }
 class NLI:
     # NLI v1 --> DeBerta
     def __init__(self) -> None:
@@ -84,7 +87,8 @@ def slot_fill(model, tokenizer, input_sentence, expected_output, max_new_tokens,
     nli_factual : list of bool
     generated : list of str
     """
-    assert len(input_sentence) == len(expected_output), "input and expected output must have the same length"
+    _nw=len(input_sentence)
+    assert _nw == len(expected_output), "input and expected output must have the same length"
 
     # prepare model input and run model
     input_tok = tokenizer(
@@ -101,16 +105,18 @@ def slot_fill(model, tokenizer, input_sentence, expected_output, max_new_tokens,
     generated = tokenizer.batch_decode(gen_o, skip_special_tokens=True)
 
     # Testing the query is not in the generated text, some models do that
-    if input_sentence[0] in generated[0]:
-        for i in range(len(input_sentence)):
-            if input_sentence[i] in generated[i]:
-                generated[i] = generated[i].replace(input_sentence[i], "")
+    if input_sentence[0][1:] in generated[0]:
+        print("Query is in the generated text, deleting")
+        for i in range(_nw):
+            generated[i] = generated[i].replace(input_sentence[i], "")
 
     # direct follow, if the expected output is the very next word
     direct_follow = []
-    for i in range(len(input_sentence)):
-        for j in range(len(expected_output[i])):
-            _exp = " " + expected_output[i][j] # !! FIXME hardcoded common missing space
+    for i in range(_nw):
+        assert isinstance(expected_output[i], list), "expected_output must be a list of strings"
+        for j in range(len(expected_output[i])): # We're going letter per letter that's no good
+            _add_space = " " if expected_output[i][j][0] != " " and input_sentence[i][-1] != " " else "" # dealing with potential missing space in dataset
+            _exp = _add_space + expected_output[i][j]
             _len = min(len(generated[i]), len(_exp))
             if _exp[:_len] == generated[i][:_len]:
                 direct_follow.append(True)
@@ -150,8 +156,8 @@ def test_generation(
     log_path="./logs/improved_sf",
     dataset_path="./benchmark/train.jsonl",
     ans_in_prompt: bool=False,
-    threshold_knowledge: bool=True,
-    model_name="tiiuae/falcon-7b-instruct",
+    threshold_knowledge: bool=False,
+    model_name="mistralai/Mistral-7B-v0.3",
     checkpoint_path: str=None,
     instruction: str="",
     num_return_sequences:int=10,
@@ -215,14 +221,22 @@ def test_generation(
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     # prompt
     # model and tokenizer
-    model = AutoModelForCausalLM.from_pretrained(model_name, device_map="balanced")#, load_in_4bit=True)
+    if checkpoint_path == "":
+        logging.error("checkpoint path is empty, overriding and setting to None")
+        checkpoint_path=None
     if checkpoint_path is not None:
         try:
-            state_dict = torch.load(checkpoint_path)
-            model.load_state_dict(state_dict)
+            model = AutoModelForCausalLM.from_pretrained(checkpoint_path, device_map="balanced")#, load_in_4bit=True)
+            # state_dict = torch.load(checkpoint_path)
+            # model.load_state_dict(state_dict)
         except Exception as e:
             logging.error(f"Error loading model checkpoint: {e} Trying to load as distributed model.")
+            # model = load_distrib_model(model, checkpoint_path)
+            model = AutoModelForCausalLM.from_pretrained(model_name, device_map="balanced")
             model = load_distrib_model(model, checkpoint_path)
+    else:
+        model = AutoModelForCausalLM.from_pretrained(model_name, device_map="balanced")#, load_in_4bit=True)
+
     tokenizer = AutoTokenizer.from_pretrained(model_name, padding_side="left")
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
@@ -231,7 +245,8 @@ def test_generation(
         df = pd.read_json(dataset_path, lines=True)
         df = prepare_data(df, provide_answer=False, instruction=instruction, ans_in_prompt=ans_in_prompt)
         # TEMPORARY TEST
-        df["result_names"] = df["result_names"].apply(lambda x:x[-1])
+        # df["expected_answers"] = df["expected_answers"].apply(lambda x:x[-1])
+        # END TEMPORARY TEST
     elif "csv" in dataset_path:
         df = pd.DataFrame(load_csv_data(dataset_path, threshold=kn_threshold, sanity_check=sanity_check, no_context=no_context, input_key=input_key, threshold_knowledge=threshold_knowledge))
     elif ".txt" in dataset_path:
@@ -240,15 +255,43 @@ def test_generation(
     else:
         raise ValueError("Dataset format not supported")
     df = df.dropna() # None (for example due to a final empty line) can break the whole process. We discard those.
+    if "expected_answers" not in df.columns:
+        logging.debug("Expected_answers is missing from data.")
+        logging.debug("Attempting to see if data_file is from fine-tuning folder.")
+        if (Path(dataset_path).parent / "data.csv").exists():
+            df_original = pd.read_csv(Path(dataset_path).parent / "data.csv")
 
-        
+            # Create a new column in df_original to store the matched completed sentence
+            df_original['matched_completed_sentence'] = None
+
+            # Iterate over each original sentence
+            for i, orig_sentence in df_original.iterrows():
+                # Initialize a flag to check if a match is found
+                match_found = False
+
+                # Iterate over each completed sentence
+                for comp_sentence in df[input_key]:
+                    # Check if the original sentence is a substring of the completed sentence
+                    if orig_sentence['query'] in comp_sentence:
+                        # If a match is found, store the completed sentence
+                        df_original.at[i, 'matched_completed_sentence'] = comp_sentence
+                        match_found = True
+                        break  # Break after finding the first match
+
+                # If no match is found, the matched_completed_sentence remains None
+
+            # Filter out original sentences that did not find a match
+            df_matched = df_original.dropna(subset=['matched_completed_sentence']).reset_index(drop=True)
+            df = df_matched
+
+        else:
+            logging.debug("No data.csv file found as would be expected in fine-tuning folder. Reparation failed. Error will follow.")
+    elif df["expected_answers"].iloc[0][0] == "[":
+        df["expected_answers"] = df["expected_answers"].apply(pd.eval)
+
     if save_inputs is not None:
         df.to_csv(save_inputs, index=False)
     tr_dataset = Dataset.from_pandas(df)
-    def collate_fn(batch):
-        return {
-            key: [item[key] for item in batch] for key in batch[0].keys()
-        }
     tr_dataloader = DataLoader(tr_dataset, batch_size=batch_size, shuffle=False, collate_fn=collate_fn)
     
     nli = NLI()
@@ -259,6 +302,7 @@ def test_generation(
 
     ## GENERATION
     for batch in tqdm.auto.tqdm(tr_dataloader):
+        print(batch)
         input_sentence = batch[input_key]
         expected_outputs = batch["expected_answers"]
         direct_follow, exact_match, nli_factual, generated, entropy = slot_fill(model, tokenizer, input_sentence, expected_outputs, max_new_tokens, device, nli, collect_entropy=collect_entropy, do_sample=num_return_sequences>1)
@@ -276,60 +320,6 @@ def test_generation(
     ## SAVE
     complete = pd.concat([df, pd.DataFrame(out)], axis=1)
     complete.to_csv(outpath, index=False)
-
-@app.command()
-def check_acc(
-    model_path: str,
-    data_file: str,
-    data_file2: str=None,
-    instruction: str="",
-    outpath: str="./data/sf_acc.csv",
-    checkpoint_path: str=None,
-    examples:Optional[List[str]] = typer.Option(None),
-    ans_in_prompt: bool=False,
-    use_nli: bool=False,
-    n_samples:int=None,
-    num_return_sequences:int=10,
-    max_new_tokens:int=25,
-    ):
-    print(model_path, data_file, data_file2, instruction, outpath, examples, ans_in_prompt, use_nli, n_samples, num_return_sequences, max_new_tokens)
-    prompt = {
-        "examples": examples,
-        "instruction": instruction,
-    }
-    _data = pd.read_csv(data_file)
-    _data2 = pd.read_csv(data_file2) if data_file2 is not None else None
-    _data = prepare_data(_data, _data2, provide_answer=False, prompt=prompt, ans_in_prompt=ans_in_prompt)
-    # drop and regenerate index
-    _data = _data.reset_index(drop=True)
-    # sample if needed
-    if n_samples is not None:
-        _data = _data.sample(n_samples)
-    # drop "Unnamed: 0" column
-    if "Unnamed: 0" in _data.columns:
-        _data = _data.drop(columns=["Unnamed: 0"])
-
-    model = AutoModelForCausalLM.from_pretrained(model_path, device_map="balanced", torch_dtype=torch.float16)
-    if checkpoint_path is not None:
-        try:
-            state_dict = torch.load(checkpoint_path)
-            model.load_state_dict(state_dict)
-        except Exception as e:
-            logging.error(f"Error loading model checkpoint: {e} Trying to load as distributed model.")
-            model = load_distrib_model(model, checkpoint_path)
-    tokenizer = AutoTokenizer.from_pretrained(model_path, padding_side="left")
-    if tokenizer.pad_token is None:
-        tokenizer.pad_token = tokenizer.eos_token
-
-    success = evaluate_all_slot_filling(
-            model, tokenizer, _data, use_nli=use_nli, partial_save_path=outpath, num_return_sequences=num_return_sequences, max_new_tokens=max_new_tokens
-        )
-    success=pd.DataFrame(success)
-    success.to_csv(outpath)
-    _temp_reload = pd.read_csv(outpath) 
-
-    print(f"Accuracy: {len(prepare_data(_temp_reload))/len(_temp_reload)}")
-    
 
 if __name__ == "__main__":
     app()

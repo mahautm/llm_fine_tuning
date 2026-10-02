@@ -12,6 +12,7 @@ from pathlib import Path
 from datasets import load_dataset
 from paramem.load_distrib_model import load_distrib_model
 import logging
+from peft import get_peft_model, LoraConfig, TaskType, PeftModel
 
 def model_pass(raw_inputs, tokenizer, model, device, save_attention=False):
     # for now, I don't constraint to a max length
@@ -70,15 +71,46 @@ def main(
     ):
     Path(out_pickle_prefix).parent.mkdir(parents=True, exist_ok=True)
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
-    logging.info("device is " + device, file=sys.stderr)
+    # logging.info("device is " + device, file=sys.stderr)
+    print("device is " + device)
     model = AutoModelForCausalLM.from_pretrained(model_name,device_map="auto",torch_dtype=torch.float16)
-    if checkpoint_path is not None:
-        try:
-            state_dict = torch.load(checkpoint_path)
-            model.load_state_dict(state_dict)
-        except Exception as e:
-            logging.error(f"Error loading model checkpoint: {e} Trying to load as distributed model.")
-            model = load_distrib_model(model, checkpoint_path)
+    if checkpoint_path is not None and checkpoint_path != "":
+        if "lora" in checkpoint_path:
+            # this is the hard-coded config also found in the training file. Ideally I should save it somewhere instead of hardcoding it
+            # logging.info("Loading a PEFT model")
+            print("Loading a PEFT model")
+            peft_config = LoraConfig(
+                task_type=TaskType.CAUSAL_LM,
+                inference_mode=False,
+                r=8,
+                lora_alpha=32,
+                lora_dropout=0.1,
+            )
+            model = get_peft_model(model, peft_config)
+            lora_weights = torch.load(checkpoint_path)
+            # size mismatch for base_model.model.model.embed_tokens.weight
+            # size mismatch for base_model.model.model.norm.weight: copying a param 
+            # size mismatch for base_model.model.lm_head.weight
+            lora_weights["base_model.model.model.embed_tokens.weight"] = model.model.model.embed_tokens.weight
+            lora_weights["base_model.model.model.norm.weight"] = model.model.model.norm.weight
+            lora_weights["base_model.model.lm_head.weight"] = model.model.lm_head.weight
+
+
+            # Load state dict with strict=False to ignore mismatched layers
+            missing_keys, unexpected_keys = model.load_state_dict(lora_weights, strict=False)
+            # Print missing and unexpected keys
+            if len(missing_keys) > 0:
+                print(f"Missing keys: {missing_keys}")
+            if len(unexpected_keys) > 0:
+                print(f"Unexpected keys: {unexpected_keys}")
+        else:
+            try:
+                state_dict = torch.load(checkpoint_path)
+                model.load_state_dict(state_dict)
+            except Exception as e:
+                logging.error(f"Error loading model checkpoint: {e} Trying to load as distributed model.")
+                state_dict = load_distrib_model(checkpoint_path)
+                model.load_state_dict(state_dict)
     model.eval()
 
     tokenizer = AutoTokenizer.from_pretrained(model_name)
